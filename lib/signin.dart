@@ -47,8 +47,33 @@ class SignUpClipper extends CustomClipper<Path> {
 //   MyTween({required this.begin, required this.end});
 // }
 
-class Bmi extends StatelessWidget {
+class Bmi extends StatefulWidget {
+  @override
+  State<Bmi> createState() => _BmiState();
+}
+
+class _BmiState extends State<Bmi> with SingleTickerProviderStateMixin {
   double curveValue = 1.0;
+  late AnimationController controller;
+  late Animation<double> animation;
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    animation = Tween<double>(
+      begin: 0.7,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOutBack));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.forward();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,12 +232,8 @@ class _infofieldState extends State<infofield> {
     return TextField(
       focusNode: fn,
       decoration: InputDecoration(
-        label: Text(widget.labtex),
-        prefixIcon: Icon(
-          widget.icon,
-          color: iconcolor,
-          size: MediaQuery.of(context).size.width * 0.05,
-        ),
+        labelText: widget.labtex,
+        prefixIcon: Icon(widget.icon, color: iconcolor),
       ),
     );
   }

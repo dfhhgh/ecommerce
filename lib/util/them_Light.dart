@@ -20,16 +20,16 @@ class LightTheme {
     inputDecorationTheme: InputDecorationThemeData(
       focusColor: AppColorsLight.accent,
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         borderSide: BorderSide(color: AppColorsLight.accent),
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 15.sp),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         borderSide: BorderSide(color: AppColorsLight.accent),
       ),
-      labelStyle: TextStyle(color: AppColorsLight.textPrimary, fontSize: 14.sp),
-
+      labelStyle: TextStyle(color: AppColorsLight.textPrimary, fontSize: 12.sp),
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelAlignment: FloatingLabelAlignment.start,
       floatingLabelStyle: TextStyle(color: AppColorsLight.accent),
       fillColor: AppColorsLight.background,
