@@ -1,6 +1,7 @@
 import 'package:ecommerce/them_light/App_color_light.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LightTheme {
   static ThemeData theme = ThemeData(
@@ -22,18 +23,28 @@ class LightTheme {
         borderRadius: BorderRadius.all(Radius.circular(100)),
         borderSide: BorderSide(color: AppColorsLight.accent),
       ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 15.sp),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(100)),
         borderSide: BorderSide(color: AppColorsLight.accent),
       ),
-      labelStyle: TextStyle(color: AppColorsLight.textPrimary),
+      labelStyle: TextStyle(color: AppColorsLight.textPrimary, fontSize: 14.sp),
+
+      floatingLabelAlignment: FloatingLabelAlignment.start,
       floatingLabelStyle: TextStyle(color: AppColorsLight.accent),
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       fillColor: AppColorsLight.background,
       filled: true,
     ),
+
     brightness: ThemeData.light().brightness,
     fontFamily: "Inter",
     scaffoldBackgroundColor: AppColorsLight.background,
+    checkboxTheme: CheckboxThemeData(
+      checkColor: WidgetStatePropertyAll(AppColorsLight.accent),
+      fillColor: WidgetStatePropertyAll(AppColorsLight.background),
+      side: MaterialStateBorderSide.resolveWith((states) {
+        return BorderSide(color: AppColorsLight.accent, width: 2);
+      }),
+    ),
   );
 }

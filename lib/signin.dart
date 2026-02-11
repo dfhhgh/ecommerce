@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:ecommerce/them_light/App_color_light.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpClipper extends CustomClipper<Path> {
   final double curveFactor;
@@ -46,15 +47,9 @@ class SignUpClipper extends CustomClipper<Path> {
 //   MyTween({required this.begin, required this.end});
 // }
 
-class Bmi extends StatefulWidget {
-  @override
-  State<Bmi> createState() => _BmiState();
-}
-
-GlobalKey<FormState> keyform = GlobalKey();
-
-class _BmiState extends State<Bmi> {
+class Bmi extends StatelessWidget {
   double curveValue = 1.0;
+
   @override
   Widget build(BuildContext context) {
     final double h = MediaQuery.of(context).size.height;
@@ -68,12 +63,87 @@ class _BmiState extends State<Bmi> {
           children: [
             Curveanimation(curveValue: curveValue),
             FormLogin(keform: keyform),
+            Row(
+              children: [
+                checkbox(),
+                Text("Remember me", style: TextStyle(fontSize: w * 0.035)),
+                Spacer(),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Forgot password?",
+                    style: TextStyle(fontSize: w * 0.035),
+                  ),
+                ),
+              ],
+            ),
+            gradientbutton(w: w, h: h),
           ],
         ),
       ),
     );
   }
 }
+
+class gradientbutton extends StatelessWidget {
+  const gradientbutton({super.key, required this.w, required this.h});
+
+  final double w;
+  final double h;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: w * 0.6,
+      height: h * 0.05,
+      decoration: BoxDecoration(
+        gradient: AppColorsLight.primaryGradient2,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {},
+          child: Center(
+            child: Text(
+              "Log in",
+              style: TextStyle(
+                color: AppColorsLight.background,
+                fontWeight: FontWeight.bold,
+                fontSize: w * 0.05,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class checkbox extends StatefulWidget {
+  const checkbox({super.key});
+
+  @override
+  State<checkbox> createState() => _checkboxState();
+}
+
+class _checkboxState extends State<checkbox> {
+  bool isChecked = false;
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: isChecked,
+      onChanged: (val) {
+        setState(() {
+          isChecked = val!;
+        });
+      },
+    );
+  }
+}
+
+GlobalKey<FormState> keyform = GlobalKey();
 
 class FormLogin extends StatefulWidget {
   final GlobalKey<FormState> keform;
@@ -92,7 +162,7 @@ class _FormLoginState extends State<FormLogin> {
       child: Column(
         spacing: h * 0.05,
         children: [
-          infofield(labtex: "User Name"),
+          infofield(labtex: "User Name", icon: Icons.person),
           password(),
         ],
       ),
@@ -102,8 +172,8 @@ class _FormLoginState extends State<FormLogin> {
 
 class infofield extends StatefulWidget {
   final String labtex;
-
-  infofield({super.key, required this.labtex});
+  final IconData icon;
+  infofield({super.key, required this.labtex, required this.icon});
 
   @override
   State<infofield> createState() => _infofieldState();
@@ -112,6 +182,7 @@ class infofield extends StatefulWidget {
 class _infofieldState extends State<infofield> {
   late FocusNode fn;
   Color iconcolor = AppColorsLight.textPrimary;
+
   @override
   void initState() {
     super.initState();
@@ -137,7 +208,11 @@ class _infofieldState extends State<infofield> {
       focusNode: fn,
       decoration: InputDecoration(
         label: Text(widget.labtex),
-        prefixIcon: Icon(Icons.person, color: iconcolor),
+        prefixIcon: Icon(
+          widget.icon,
+          color: iconcolor,
+          size: MediaQuery.of(context).size.width * 0.05,
+        ),
       ),
     );
   }
@@ -183,7 +258,11 @@ class _passwordState extends State<password> {
       obscureText: ishidden,
       decoration: InputDecoration(
         label: Text("Password"),
-        prefixIcon: Icon(Icons.lock, color: Coloricon),
+        prefixIcon: Icon(
+          Icons.lock,
+          color: Coloricon,
+          size: MediaQuery.of(context).size.width * 0.05,
+        ),
         suffixIcon: IconButton(
           onPressed: () {
             setState(() {
@@ -196,7 +275,11 @@ class _passwordState extends State<password> {
               }
             });
           },
-          icon: Icon(icon, color: Coloricon),
+          icon: Icon(
+            icon,
+            color: Coloricon,
+            size: MediaQuery.of(context).size.width * 0.05,
+          ),
         ),
       ),
     );

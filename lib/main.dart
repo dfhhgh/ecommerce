@@ -3,6 +3,8 @@ import 'package:ecommerce/util/them_Light.dart';
 import 'package:flutter/material.dart';
 import 'them_light/App_color_light.dart';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -13,12 +15,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-
-      theme: LightTheme.theme,
-      initialRoute: '/',
-      routes: {'/': (context) => Bmi()},
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      // Use builder only if you need to use library outside ScreenUtilInit context
+      builder: (_, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'First Method',
+          // You can use the library anywhere in the app even in theme
+          theme: LightTheme.theme,
+          initialRoute: '/',
+          routes: {'/': (context) => Bmi()},
+        );
+      },
     );
   }
 }
