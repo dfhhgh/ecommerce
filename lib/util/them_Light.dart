@@ -1,0 +1,39 @@
+import 'package:ecommerce/them_light/App_color_light.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+
+class LightTheme {
+  static ThemeData theme = ThemeData(
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStatePropertyAll(AppColorsLight.accent),
+      ),
+    ),
+    disabledColor: AppColorsLight.secondary.withOpacity(0.5),
+    iconTheme: IconThemeData(color: AppColorsLight.accent),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ),
+    focusColor: AppColorsLight.accent,
+    inputDecorationTheme: InputDecorationThemeData(
+      focusColor: AppColorsLight.accent,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderSide: BorderSide(color: AppColorsLight.accent),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderSide: BorderSide(color: AppColorsLight.accent),
+      ),
+      labelStyle: TextStyle(color: AppColorsLight.textPrimary),
+      floatingLabelStyle: TextStyle(color: AppColorsLight.accent),
+      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      fillColor: AppColorsLight.background,
+      filled: true,
+    ),
+    brightness: ThemeData.light().brightness,
+    fontFamily: "Inter",
+    scaffoldBackgroundColor: AppColorsLight.background,
+  );
+}
