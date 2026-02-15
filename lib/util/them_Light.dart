@@ -28,12 +28,9 @@ class LightTheme {
         borderRadius: BorderRadius.all(Radius.circular(12)),
         borderSide: BorderSide(color: AppColorsLight.accent),
       ),
-      labelStyle: TextStyle(color: AppColorsLight.textPrimary, fontSize: 12.sp),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelAlignment: FloatingLabelAlignment.start,
       floatingLabelStyle: TextStyle(color: AppColorsLight.accent),
-      fillColor: AppColorsLight.background,
-      filled: true,
     ),
 
     brightness: ThemeData.light().brightness,

@@ -47,12 +47,13 @@ class SignUpClipper extends CustomClipper<Path> {
 //   MyTween({required this.begin, required this.end});
 // }
 
-class Login extends StatefulWidget {
+class Signup extends StatefulWidget {
+  static const String routeName = "/signup";
   @override
-  State<Login> createState() => _LoginState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
   GlobalKey<FormState> keyform = GlobalKey();
   double curveValue = 1.0;
   late AnimationController controller;
@@ -103,7 +104,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   border: Border.all(color: Colors.grey),
                 ),
               ),
-              Text("Or log in with", style: TextStyle(fontSize: w * 0.035)),
+              Text("Or via ", style: TextStyle(fontSize: w * 0.035)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: w * 0.1,
@@ -132,14 +133,21 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "already have email ",
                     style: TextStyle(fontSize: w * 0.035),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, Signup.routeName);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        "/",
+                        (route) => false,
+                      );
                     },
-                    child: Text("Sign Up"),
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(fontSize: w * 0.035),
+                    ),
                   ),
                 ],
               ),
@@ -212,7 +220,7 @@ class gradientbutton extends StatelessWidget {
           },
           child: Center(
             child: Text(
-              "Log in",
+              "Sign Up",
               style: TextStyle(
                 color: AppColorsLight.background,
                 fontWeight: FontWeight.bold,
@@ -251,7 +259,10 @@ class _checkboxState extends State<checkbox> {
 class FormLogin extends StatefulWidget {
   final GlobalKey<FormState> keform;
   TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
+  TextEditingController Confirmpass = TextEditingController();
+
   FormLogin({super.key, required this.keform});
 
   @override
@@ -263,6 +274,8 @@ class _FormLoginState extends State<FormLogin> {
   void dispose() {
     widget.username.dispose();
     widget.pass.dispose();
+    widget.email.dispose();
+    widget.Confirmpass.dispose();
     super.dispose();
   }
 
@@ -272,24 +285,65 @@ class _FormLoginState extends State<FormLogin> {
     final double w = MediaQuery.of(context).size.width;
     return Form(
       key: widget.keform,
+
       child: Column(
-        spacing: h * 0.05,
+        spacing: h * 0.03,
         children: [
+          infofield(
+            labtex: "Email",
+            icon: Icons.mail,
+            Cont: widget.email,
+            validator: (value) {
+              RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+              if (value!.isEmpty) {
+                return "you can't leave this field empy";
+              } else if (!value.contains("@") || emailRegex.hasMatch(value)) {
+                return "please enter a valid email";
+              }
+            },
+          ),
           infofield(
             labtex: "User Name",
             icon: Icons.person,
-            user: widget.username,
+            Cont: widget.username,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "you can't leave this field empy";
+              }
+            },
           ),
-          password(pass: widget.pass),
+          password(
+            pass: widget.pass,
+            labtex: "Password",
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "you can't leave this field empy";
+              } else if (value.length < 8) {
+                return "password must be at least 8 characters";
+              }
+            },
+          ),
+          password(
+            pass: widget.Confirmpass,
+            labtex: "Confirm Password",
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "you can't leave this field empy";
+              } else if (value.length < 8) {
+                return "password must be at least 8 characters";
+              } else if (value != widget.pass.text) {
+                return "passwords do not match";
+              }
+            },
+          ),
           Row(
             children: [
               checkbox(),
-              Text("Remember me", style: TextStyle(fontSize: w * 0.035)),
-              Spacer(),
+              Text("I accept the ", style: TextStyle(fontSize: w * 0.035)),
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  "Forgot password?",
+                  "Terms and Conditions",
                   style: TextStyle(fontSize: w * 0.035),
                 ),
               ),
@@ -305,13 +359,15 @@ class _FormLoginState extends State<FormLogin> {
 class infofield extends StatefulWidget {
   final String labtex;
   final IconData icon;
-  final TextEditingController user;
+  final TextEditingController Cont;
+  final String? Function(String?)? validator;
 
   infofield({
     super.key,
     required this.labtex,
     required this.icon,
-    required this.user,
+    required this.Cont,
+    this.validator,
   });
 
   @override
@@ -344,12 +400,8 @@ class _infofieldState extends State<infofield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "you can't leave this field empy";
-        }
-      },
-      controller: widget.user,
+      validator: widget.validator,
+      controller: widget.Cont,
       focusNode: fn,
       decoration: InputDecoration(
         labelText: widget.labtex,
@@ -365,8 +417,15 @@ class _infofieldState extends State<infofield> {
 
 class password extends StatefulWidget {
   final TextEditingController pass;
+  final String labtex;
+  final String? Function(String?)? validator;
 
-  const password({super.key, required this.pass});
+  const password({
+    super.key,
+    required this.pass,
+    required this.labtex,
+    this.validator,
+  });
 
   @override
   State<password> createState() => _passwordState();
@@ -401,18 +460,12 @@ class _passwordState extends State<password> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "you can't leave this field empy";
-        } else if (value.length < 8) {
-          return "password must be at least 8 characters";
-        }
-      },
+      validator: widget.validator,
       controller: widget.pass,
       focusNode: focusNode,
       obscureText: ishidden,
       decoration: InputDecoration(
-        labelText: "Password",
+        labelText: widget.labtex,
         prefixIcon: Icon(
           Icons.lock,
           color: Coloricon,
@@ -467,12 +520,12 @@ class Curveanimation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "welcome back!",
+                  "welcome ",
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "Log in",
+                  "Sign Up",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 36,

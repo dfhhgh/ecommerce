@@ -2,7 +2,7 @@ import 'package:ecommerce/signin.dart';
 import 'package:ecommerce/util/them_Light.dart';
 import 'package:flutter/material.dart';
 import 'them_light/App_color_light.dart';
-
+import 'signhup.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
           // You can use the library anywhere in the app even in theme
           theme: LightTheme.theme,
           initialRoute: '/',
-          routes: {'/': (context) => Bmi()},
+          routes: {
+            '/': (context) => Login(),
+            Signup.routeName: (context) => Signup(),
+          },
         );
       },
     );
