@@ -1,51 +1,16 @@
 import 'dart:ui';
 
-import 'package:ecommerce/them_light/App_color_light.dart';
+import 'package:ecommerce/core/them_light/App_color_light.dart';
+import 'package:ecommerce/features/auth/screens/signhup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'signhup.dart';
 
-class SignUpClipper extends CustomClipper<Path> {
-  final double curveFactor;
+import 'package:ecommerce/features/auth/screens/ForgetPassword.dart';
 
-  SignUpClipper(this.curveFactor);
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-
-    path.lineTo(0, size.height * curveFactor);
-
-    path.quadraticBezierTo(
-      size.width * 0.25,
-      size.height * curveFactor,
-      size.width * 0.6,
-      size.height * 0.75,
-    );
-
-    path.quadraticBezierTo(
-      size.width * curveFactor + 0.15,
-      size.height * curveFactor,
-      size.width,
-      size.height * 0.7,
-    );
-
-    path.lineTo(size.width, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant SignUpClipper oldClipper) {
-    return oldClipper.curveFactor != curveFactor;
-  }
-}
-
-// class MyTween<T> {
-//   T begin;
-//   T end;
-//   MyTween({required this.begin, required this.end});
-// }
+import 'package:ecommerce/features/auth/widgets/Gradbutton.dart';
+import '../widgets/curveanimation.dart';
+import '../screens/ForgetPassword.dart';
+import '../widgets/InfoField.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -95,7 +60,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           child: Column(
             spacing: h * 0.02,
             children: [
-              Curveanimation(curveValue: curveValue),
+              Curveanimation(curveValue: curveValue, text: "Sign In"),
               FormLogin(keform: keyform),
               Container(
                 width: w * 0.5,
@@ -139,7 +104,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     onPressed: () {
                       Navigator.pushNamed(context, Signup.routeName);
                     },
-                    child: Text("Sign Up"),
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(fontSize: w * 0.035),
+                    ),
                   ),
                 ],
               ),
@@ -175,51 +143,6 @@ class PicButton extends StatelessWidget {
               offset: Offset(0, 5),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class gradientbutton extends StatelessWidget {
-  final GlobalKey<FormState> keyform;
-  const gradientbutton({
-    super.key,
-    required this.w,
-    required this.h,
-    required this.keyform,
-  });
-
-  final double w;
-  final double h;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: w * 0.5,
-      height: h * 0.06,
-      decoration: BoxDecoration(
-        gradient: AppColorsLight.primaryGradient2,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Material(
-        color: Colors.transparent,
-
-        child: InkWell(
-          borderRadius: BorderRadius.circular(100),
-          onTap: () {
-            keyform.currentState!.validate();
-          },
-          child: Center(
-            child: Text(
-              "Log in",
-              style: TextStyle(
-                color: AppColorsLight.background,
-                fontWeight: FontWeight.bold,
-                fontSize: w * 0.05,
-              ),
-            ),
-          ),
         ),
       ),
     );
@@ -278,7 +201,12 @@ class _FormLoginState extends State<FormLogin> {
           infofield(
             labtex: "User Name",
             icon: Icons.person,
-            user: widget.username,
+            Cont: widget.username,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "you can't leave this field empty";
+              }
+            },
           ),
           password(pass: widget.pass),
           Row(
@@ -287,7 +215,9 @@ class _FormLoginState extends State<FormLogin> {
               Text("Remember me", style: TextStyle(fontSize: w * 0.035)),
               Spacer(),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, ForgetPassword.routeName);
+                },
                 child: Text(
                   "Forgot password?",
                   style: TextStyle(fontSize: w * 0.035),
@@ -295,69 +225,8 @@ class _FormLoginState extends State<FormLogin> {
               ),
             ],
           ),
-          gradientbutton(w: w, h: h, keyform: widget.keform),
+          gradientbutton(w: w, h: h, keyform: widget.keform, text: "Sign In"),
         ],
-      ),
-    );
-  }
-}
-
-class infofield extends StatefulWidget {
-  final String labtex;
-  final IconData icon;
-  final TextEditingController user;
-
-  infofield({
-    super.key,
-    required this.labtex,
-    required this.icon,
-    required this.user,
-  });
-
-  @override
-  State<infofield> createState() => _infofieldState();
-}
-
-class _infofieldState extends State<infofield> {
-  late FocusNode fn;
-  Color iconcolor = AppColorsLight.textPrimary;
-
-  @override
-  void initState() {
-    super.initState();
-    fn = FocusNode();
-    fn.addListener(
-      () => setState(() {
-        iconcolor = fn.hasFocus
-            ? AppColorsLight.accent
-            : AppColorsLight.textPrimary;
-      }),
-    );
-  }
-
-  @override
-  void dispose() {
-    fn.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "you can't leave this field empy";
-        }
-      },
-      controller: widget.user,
-      focusNode: fn,
-      decoration: InputDecoration(
-        labelText: widget.labtex,
-        prefixIcon: Icon(
-          widget.icon,
-          color: iconcolor,
-          size: MediaQuery.of(context).size.width * 0.05,
-        ),
       ),
     );
   }
@@ -437,55 +306,6 @@ class _passwordState extends State<password> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Curveanimation extends StatelessWidget {
-  const Curveanimation({super.key, required this.curveValue});
-
-  final double curveValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      duration: const Duration(seconds: 2),
-      builder: (context, value, child) {
-        return ClipPath(
-          clipper: SignUpClipper(value),
-          child: Container(
-            height: MediaQuery.sizeOf(context).height * 0.3,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xff2C3E50), Color(0xff00B4DB)],
-              ),
-            ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "welcome back!",
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  "Log in",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-      tween: Tween<double>(begin: 0.7, end: curveValue),
-      curve: Curves.easeInOutBack,
     );
   }
 }

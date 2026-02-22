@@ -1,4 +1,4 @@
-import 'package:ecommerce/them_light/App_color_light.dart';
+import 'package:ecommerce/core/them_light/App_color_light.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +32,7 @@ class LightTheme {
       floatingLabelAlignment: FloatingLabelAlignment.start,
       floatingLabelStyle: TextStyle(color: AppColorsLight.accent),
     ),
-
+    indicatorColor: AppColorsLight.accent,
     brightness: ThemeData.light().brightness,
     fontFamily: "Inter",
     scaffoldBackgroundColor: AppColorsLight.background,

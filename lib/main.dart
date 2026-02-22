@@ -1,9 +1,11 @@
-import 'package:ecommerce/signin.dart';
-import 'package:ecommerce/util/them_Light.dart';
+import 'package:ecommerce/features/auth/screens/signin.dart';
+import 'package:ecommerce/core/them_light/them_Light.dart';
 import 'package:flutter/material.dart';
-import 'them_light/App_color_light.dart';
-import 'signhup.dart';
+import 'core/them_light/App_color_light.dart';
+import 'features/auth/screens/signhup.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'features/auth/screens/ForgetPassword.dart';
+import 'features/auth/screens/Verifycode.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +32,8 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Login(),
             Signup.routeName: (context) => Signup(),
+            ForgetPassword.routeName: (context) => ForgetPassword(),
+            Verifycode.routeName: (context) => Verifycode(),
           },
         );
       },
